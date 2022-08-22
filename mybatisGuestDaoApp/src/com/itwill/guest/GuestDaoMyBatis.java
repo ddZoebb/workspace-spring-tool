@@ -43,6 +43,7 @@ public class GuestDaoMyBatis {
 	public Guest selectByNo(int no) throws Exception {
 		Guest guest = null;
 		SqlSession sqlSession = sqlSessionFactory.openSession(true);
+		guest=sqlSession.selectOne(NAMESPACE+"selectGuestById", no);
 		sqlSession.close();
 		return guest;
 	}

@@ -24,6 +24,49 @@
 	</association>
 	
 	</resultMap>
+	
+	<resultMap type="com.mybatis3.domain.Student" id="studentWithCoursesResultMap" >
+	<result column="stud_id" property="studId"/>
+	<result column="student_name" property="name"/>
+	<result column="email" property="email"/>
+	<result column="dob" property="dob"/>
+	
+	<collection property="courseList" javaType="java.util.List" ofType="com.mybatis3.domain.Course">
+	
+	<result column="COURSE_ID" property="courseId"/>
+	<result column="COURSE_NAME" property="name"/>
+	<result column="DESCRIPTION" property="description"/>
+	<result column="START_DATE" property="startDate"/>
+	<result column="END_DATE" property="endDate"/>
+	</collection>
+	
+	
+	</resultMap>
+	
+	<resultMap type="com.mybatis3.domain.Student" id="studentWithAddressWithCoursesResultMap" >
+	<result column="stud_id" property="studId"/>
+	<result column="student_name" property="name"/>
+	<result column="email" property="email"/>
+	<result column="dob" property="dob"/>
+	<association property="address" javaType="com.mybatis3.domain.Address">
+	<result column="addr_id" property="addrId"/>
+	<result column="STREET" property="street"/>
+	<result column="CITY" property="city"/>
+	<result column="STATE" property="state"/>
+	<result column="ZIP" property="zip"/>
+	<result column="COUNTRY" property="country"/>
+	</association>
+	<collection property="courseList" javaType="java.util.List" ofType="com.mybatis3.domain.Course">
+	
+	<result column="COURSE_ID" property="courseId"/>
+	<result column="COURSE_NAME" property="name"/>
+	<result column="DESCRIPTION" property="description"/>
+	<result column="START_DATE" property="startDate"/>
+	<result column="END_DATE" property="endDate"/>
+	</collection>
+	
+	
+	</resultMap>
 	<!-- ########################################################################### -->
 	<!-- 
 	/**************************************************
@@ -87,7 +130,16 @@
 	 * resultMap : studentWithCoursesResultMap
 	 */
 	 -->
+	 <select id="findStudentByIdWithCourses" parameterType="int" resultMap="studentWithCoursesResultMap">
+select  s.stud_id,s.name as student_name ,s.email,s.phone,s.dob ,
+        c.course_id,c.name as course_name ,c.description,c.start_date,c.end_date
+		from students s 
+		left outer join course_enrollment ce
+		on s.stud_id = ce.stud_id
+		left outer join courses c
+		on ce.course_id=c.course_id where s.stud_id=#{studId}
 	 
+	 </select>
 	 
 	 
 	<!-- 
@@ -99,6 +151,16 @@
 	 <insert id="insertStudent" parameterType="com.mybatis3.domain.Student">
 	 INSERT INTO STUDENTS (STUD_ID,NAME,EMAIL,DOB) VALUES 
 	 (STUDENTS_STUD_ID_SEQ.nextval,#{name},#{email},#{dob})
+	 </insert>
+	 
+	 <insert id="insertStudentBySequence1" parameterType="com.mybatis3.domain.Student">
+	 <selectKey resultType="int" order="BEFORE" keyProperty="studId">
+	 select STUDENTS_STUD_ID_SEQ.nextval from dual
+	 </selectKey>
+	 INSERT INTO STUDENTS (STUD_ID,NAME,EMAIL,DOB) 
+	 VALUES (#{studId},#{name},#{email},#{dob})
+	 
+	 
 	 </insert>
 	
 	<!-- 
