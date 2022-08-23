@@ -5,8 +5,8 @@
 <configuration>
 <properties resource="jdbc.properties"/>
 	<typeAliases>
-		<typeAlias alias="Guest"
-			type="com.itwill.guest.Guest" />
+		<typeAlias alias="User"
+			type="com.itwill.user.User" />
 	</typeAliases>
 	<environments default="development">
 		<environment id="development">
@@ -30,7 +30,7 @@
 		</environment>
 	</environments>
 	<mappers>
-	<mapper resource="com/itwill/guest/mapper/GuestMapper.xml"/>
+	<mapper resource="com/itwill/user/mapper/UserMapper.xml"/>
 	</mappers>
 </configuration>
 

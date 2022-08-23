@@ -3,13 +3,25 @@ package com.itwill.user;
 
 import java.util.List;
 
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+
 
 public class UserDaoMyBatis {
+	private SqlSessionFactory sqlSessionFactory;
+	public static final String NAMESPACE = "com.itwill.user.mapper.UserMapper.";
 	
 	
 
 	public UserDaoMyBatis() throws Exception {
-		
+		try {
+			sqlSessionFactory = new SqlSessionFactoryBuilder()
+					.build(Resources.getResourceAsStream("mybatis-config.xml"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 
@@ -47,8 +59,11 @@ public class UserDaoMyBatis {
 	 * 사용자아이디에해당하는 정보를 데이타베이스에서 찾아서 User 도메인클래스에 저장하여 반환
 	 */
 	public User findUser(String userId) throws Exception {
-		
 		User findUser = null;
+		SqlSession sqlSession=sqlSessionFactory.openSession(true);
+		findUser=sqlSession.selectOne(NAMESPACE+"findUser",userId);
+		sqlSession.close();
+
 		
 		return findUser;
 	}
@@ -58,6 +73,9 @@ public class UserDaoMyBatis {
 	 */
 	public List<User> findUserList() throws Exception {
 		List<User> findUserList =null;
+		SqlSession sqlSession=sqlSessionFactory.openSession(true);
+		findUserList=sqlSession.selectList(NAMESPACE+"findUserList");
+		sqlSession.close();
 		return findUserList;
 	}
 
