@@ -25,35 +25,7 @@ public class UserDaoMyBatis {
 
 	}
 
-	/*
-	 * 사용자관리테이블에 새로운사용자생성
-	 */
-	public int create(User user) throws Exception {
-		
-		int insertRowCount = 0;
-		
-		return insertRowCount;
-	}
-
-	/*
-	 * 기존의 사용자정보를 수정
-	 */
-	public int update(User user) throws Exception {
-		
-		int updateRowCount = 0;
-		
-		return updateRowCount;
-	}
-
-	/*
-	 * 사용자아이디에해당하는 사용자를 삭제
-	 */
-	public int remove(String userId) throws Exception {
-		
-		int removeRowCount = 0;
-		
-		return removeRowCount;
-	}
+	
 
 	/*
 	 * 사용자아이디에해당하는 정보를 데이타베이스에서 찾아서 User 도메인클래스에 저장하여 반환
@@ -66,6 +38,41 @@ public class UserDaoMyBatis {
 
 		
 		return findUser;
+	}
+	
+	/*
+	 * 사용자관리테이블에 새로운사용자생성
+	 */
+	public int create(User user) throws Exception {
+		SqlSession sqlSession=sqlSessionFactory.openSession(true);
+
+		int insertRowCount = sqlSession.insert(NAMESPACE+"insertUser", user);
+		sqlSession.close();
+		return insertRowCount;
+	}
+
+	/*
+	 * 기존의 사용자정보를 수정
+	 */
+	public int update(User user) throws Exception {
+		SqlSession sqlSession=sqlSessionFactory.openSession(true);
+
+		int updateRowCount = sqlSession.update(NAMESPACE+"updateUser", user);
+		sqlSession.close();
+
+		return updateRowCount;
+	}
+
+	/*
+	 * 사용자아이디에해당하는 사용자를 삭제
+	 */
+	public int remove(String userId) throws Exception {
+		SqlSession sqlSession=sqlSessionFactory.openSession(true);
+
+		int removeRowCount = sqlSession.delete(NAMESPACE+"deleteUser", userId);
+		sqlSession.close();
+
+		return removeRowCount;
 	}
 
 	/*
@@ -84,6 +91,12 @@ public class UserDaoMyBatis {
 	 */
 	public boolean existedUser(String userId) throws Exception {
 		boolean isExist = false;
+		SqlSession sqlSession=sqlSessionFactory.openSession(true);
+		User user=sqlSession.selectOne(NAMESPACE+"findUser", userId);
+		if(user!=null) {
+			isExist=true;
+		}
+		sqlSession.close();
 		return isExist;
 	}
 

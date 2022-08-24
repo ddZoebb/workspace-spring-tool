@@ -51,20 +51,23 @@ public class GuestDaoMyBatis {
 	public List<Guest> selectAll() throws Exception {
 		List<Guest> guestList = null;
 		SqlSession sqlSession = sqlSessionFactory.openSession(true);
+		guestList=sqlSession.selectList(NAMESPACE+"selectGuest");
 		sqlSession.close();
 		return guestList;
 	}
 
 	public int updateGuest(Guest guest) throws Exception {
 		SqlSession sqlSession = sqlSessionFactory.openSession(false);
+		int rowCount=sqlSession.update(NAMESPACE+"updateGuest", guest);
 		sqlSession.commit();
 		sqlSession.close();
-		return 0;
+		return rowCount;
 	}
 
 	public int deleteGuest(int no) throws Exception {
 		SqlSession sqlSession = sqlSessionFactory.openSession(true);
+		int rowCount=sqlSession.delete(NAMESPACE+"deleteGuest", no);
 		sqlSession.close();
-		return 0;
+		return rowCount;
 	}
 }

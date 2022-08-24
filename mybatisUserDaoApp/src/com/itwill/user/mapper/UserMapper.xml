@@ -15,10 +15,25 @@ select userid,password,name,email from userinfo
 
 </select>
 
-<select id="findUser" parameterType="string" resultMap="user">
+<select id="findUser" parameterType="String" resultType="com.itwill.user.User">
 select userid,password,name,email from userinfo where userid=#{userId}
 
 </select>
 
 
+<insert id="insertUser" parameterType="com.itwill.user.User">
+insert into userinfo(userid,password,name,email) values(#{userId},#{password},#{name},#{email})
+
+</insert>
+
+<delete id="deleteUser" parameterType="String">
+delete userinfo where userid=#{userId}
+
+</delete>
+
+<update id="updateUser" parameterType="com.itwill.user.User">
+update  userinfo 
+set password=#{password},name=#{name},email=#{email}
+where userid=#{userId}
+</update>
 </mapper>

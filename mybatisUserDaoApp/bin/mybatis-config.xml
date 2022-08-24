@@ -28,6 +28,7 @@
 		</environment>
 	</environments>
 	<mappers>
+		<mapper resource="com/itwill/user/mapper/UserMapper.xml"/>
 	
 	</mappers>
 </configuration>
