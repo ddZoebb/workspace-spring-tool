@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 
-import com.mybatis3.deep.mapper.StudentMapper;
+import com.mybatis3.dao.mapper.StudentMapper;
 import com.mybatis3.domain.Student;
 
 public class MapperProxy implements StudentMapper {
@@ -22,8 +22,8 @@ public class MapperProxy implements StudentMapper {
 	@Override
 	public List<Student> findAllStudents() {
 		String namespace = StudentMapper.class.getName();
-		sqlSession.selectList(namespace+".findAllStudents");
-		return null;
+		return sqlSession.selectList(namespace+".findAllStudents");
+		
 	}
 
 }

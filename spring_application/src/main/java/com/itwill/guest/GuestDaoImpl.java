@@ -8,6 +8,12 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Repository;
+@Repository(value = "guestDao")
+@Scope(value="singleton")
 public class GuestDaoImpl implements GuestDao {
 	private DataSource dataSource;
 	
@@ -15,12 +21,15 @@ public class GuestDaoImpl implements GuestDao {
 		System.out.println("2.#### GuestDaoImpl() 기본생성자호출");
 	}
 	
-	public GuestDaoImpl(DataSource dataSource) {
+	@Autowired
+	public GuestDaoImpl(@Qualifier(value="dataSource") DataSource dataSource) {
 		System.out.println("2.#### GuestDaoImpl: ("+dataSource+") 생성자 호출");
 		this.dataSource=dataSource;
 		
 	}
 	
+	@Autowired
+	@Qualifier(value="dataSource")
 	public void setDataSource(DataSource dataSource) {
 		System.out.println("2.#### GuestDaoImpl: setDataSource("+dataSource+") 호출");
 		this.dataSource = dataSource;

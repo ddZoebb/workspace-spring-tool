@@ -1,9 +1,4 @@
 package com.itwill.guest;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
 /*
 이름             널?       유형             
 -------------- -------- -------------- 
@@ -15,7 +10,6 @@ GUEST_HOMEPAGE          VARCHAR2(50)
 GUEST_TITLE    NOT NULL VARCHAR2(100)  
 GUEST_CONTENT  NOT NULL VARCHAR2(4000) 
 */
-@Component(value="guest")
 public class Guest {
 	private int guest_no;
 	private String guest_name;
@@ -24,14 +18,11 @@ public class Guest {
 	private String guest_homepage;
 	private String guest_title;
 	private String guest_content;
-	
 	public Guest() {
+		System.out.println("Guest()");
 	}
-	
-	@Autowired
-	public Guest(@Value(value="100") int guest_no,@Value(value="이름") String guest_name,@Value(value="2022/10/10") String guest_date, 
-		@Value(value="email")String guest_email,@Value(value="home") String guest_homepage,
-		@Value(value="title")String guest_title,@Value(value="content") String guest_content) {
+	public Guest(int guest_no, String guest_name, String guest_date, String guest_email, String guest_homepage,
+			String guest_title, String guest_content) {
 		super();
 		this.guest_no = guest_no;
 		this.guest_name = guest_name;
@@ -42,18 +33,19 @@ public class Guest {
 		this.guest_content = guest_content;
 	}
 	public int getGuest_no() {
+		System.out.println("### Guest.getGuest_no()호출");
 		return guest_no;
 	}
-	
-	@Autowired
-	@Value(value="3")
 	public void setGuest_no(int guest_no) {
+		System.out.println("### Guest.setGuest_no(int guest_no) 호출");
 		this.guest_no = guest_no;
 	}
 	public String getGuest_name() {
+		System.out.println("### Guest.getGuest_name() 호출");
 		return guest_name;
 	}
 	public void setGuest_name(String guest_name) {
+		System.out.println("### Guest.setGuest_name(String guest_name) 호출");
 		this.guest_name = guest_name;
 	}
 	public String getGuest_date() {
