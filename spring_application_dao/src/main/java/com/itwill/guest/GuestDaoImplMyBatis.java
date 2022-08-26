@@ -3,44 +3,47 @@ package com.itwill.guest;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
-
-public class GuestDaoImplMyBatis implements GuestDao {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+@Repository(value = "guestDaoImplMyBatis")
+public class GuestDaoImplMyBatis implements GuestDao{
+	@Autowired(required = false)
 	private SqlSession sqlSession;
-	public static final String NAMESPACE="com.itwill.guest.mapper.GuestMapper.";
 	
-
+	public GuestDaoImplMyBatis() {
+		System.out.println("#### GuestDaoImplMyBatis()기본생성자");
+	}
+	
 	public void setSqlSession(SqlSession sqlSession) {
+		System.out.println("#### GuestDaoImplMyBatis : setSqlSession("+sqlSession+") 메쏘드 호출");
 		this.sqlSession = sqlSession;
 	}
 
 	@Override
 	public List<Guest> selectAll() throws Exception {
-		// TODO Auto-generated method stub
-		return sqlSession.selectList("com.itwill.guest.mapper.GuestMapper.selectGuest");
+		return sqlSession.selectList("com.itwill.guest.mapper.GuestMapper.selectAll");
 	}
 
 	@Override
 	public Guest selectByNo(int no) throws Exception {
-		// TODO Auto-generated method stub
-		return sqlSession.selectOne(NAMESPACE+"selectGuestByNo",no);
+		return sqlSession.selectOne("com.itwill.guest.mapper.GuestMapper.selectByNo",no);
 	}
 
 	@Override
 	public int insertGuest(Guest guest) throws Exception {
-		// TODO Auto-generated method stub
-		return sqlSession.insert(NAMESPACE+"insertGuest",guest);
+		return sqlSession.insert(
+				"com.itwill.guest.mapper.GuestMapper.insertGuest",guest);
 	}
 
 	@Override
 	public int updateGuest(Guest guest) throws Exception {
-		// TODO Auto-generated method stub
-		return sqlSession.update(NAMESPACE+"updateGuest",guest);
+		return sqlSession.update(
+				"com.itwill.guest.mapper.GuestMapper.updateGuest",guest);
 	}
 
 	@Override
 	public int deleteGuest(int no) throws Exception {
-		// TODO Auto-generated method stub
-		return sqlSession.delete(NAMESPACE+"deleteGuest",no);
+		return sqlSession.delete("com.itwill.guest.mapper.GuestMapper.deleteGuest",no);
 	}
 
 }

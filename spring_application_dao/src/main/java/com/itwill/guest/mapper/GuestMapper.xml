@@ -1,40 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itwill.guest.mapper.GuestMapper">
-<resultMap type="com.itwill.guest.Guest" id="guest">
-<result column="GUEST_NO" property="guest_no"/>
-<result column="GUEST_NAME" property="guest_name"/>
-<result column="GUEST_DATE" property="guest_date"/>
-<result column="GUEST_EMAIL" property="guest_email"/>
-<result column="GUEST_HOMEPAGE" property="guest_homepage"/>
-<result column="GUEST_TITLE" property="guest_title"/>
-<result column="GUEST_CONTENT" property="guest_content"/>
-</resultMap>
-
-<select id="selectGuestByNo" parameterType="int" resultMap="guest">
-select * from guest where guest_no =#{guest_no}
-</select>
-
-<select id="selectGuest" parameterType="int" resultMap="guest">
-select * from guest
-</select>
-
-<insert id="insertGuest" parameterType="com.itwill.guest.Guest">
-<selectKey keyProperty="guest_no" order="BEFORE" resultType="int">
-select guest_no_seq.nextval from dual
-</selectKey>
-insert into GUEST values(#{guest_no} , #{guest_name}, sysdate, #{guest_email}, #{guest_homepage}, #{guest_title}, #{guest_content})
-</insert>
-
-<delete id="deleteGuest" parameterType="int">
-delete from guest where guest_no = #{guest_no}
-</delete>
-
-<update id="updateGuest" parameterType="com.itwill.guest.Guest">
-update guest set guest_name=#{guest_name},
-guest_date=to_date(#{guest_date},'YYYY/MM/DD'),
-guest_email=#{guest_email},guest_homepage=#{guest_homepage},guest_title=#{guest_title},guest_content=#{guest_content} where guest_no = #{guest_no}
-
-</update>
-
+<!-- 
+	<select id="selectAll" resultType="Guest">
+		select * from guest
+	</select>
+	
+	<select id="selectByNo" 
+			parameterType="int" 
+			resultType="com.itwill.guest.Guest">
+		select * from guest where guest_no=#{guest_no}
+	</select>
+	
+	<insert id="insertGuest" 
+			parameterType="com.itwill.guest.Guest">
+		insert into guest values(guest_no_seq.nextval,
+								#{guest_name},sysdate,
+								#{guest_email},#{guest_homepage},
+								#{guest_title},#{guest_content})	
+	</insert>
+	
+	
+	 
+	 <update id="updateGuest" 
+	 		 parameterType="com.itwill.guest.Guest">
+	 	update guest set
+	 		guest_name=#{guest_name},
+	 		guest_date=to_date(#{guest_date},'YYYY/MM/DD'),
+	 		guest_email=#{guest_email},
+	 		guest_homepage=#{guest_homepage},
+	 		guest_title=#{guest_title},
+	 		guest_content=#{guest_content}
+		where guest_no=#{guest_no}
+	 </update>
+	 
+	 <delete id="deleteGuest" parameterType="int">
+	 	delete from guest where guest_no=#{guest_no}
+	 </delete>
+ -->	 
+	 
+	 <!-- 	
+	<insert id="insertGuest" 
+			parameterType="com.itwill.guest.Guest">
+		<selectKey keyProperty="guest_no" order="BEFORE" resultType="int">
+			select guest_no_seq.nextval from dual
+		</selectKey>	
+		insert into guest values(#{guest_no},
+								#{guest_name},sysdate,
+								#{guest_email},#{guest_homepage},
+								#{guest_title},#{guest_content})	
+	</insert>
+	 -->
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
 </mapper>

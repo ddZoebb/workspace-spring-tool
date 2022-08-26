@@ -19,19 +19,18 @@ public class MyBatisMapperInterfaceFlowMain {
 		/*
 		 * 0.mybatis-config-mapper-interface.xml --> InputStream
 		 */
-		InputStream myBatisConfigInputStream = Resources.getResourceAsStream("mybatis-config-mapper-interface.xml");
-
+		InputStream myBatisConfigInputStream = 
+				Resources.getResourceAsStream("mybatis-config-mapper-interface.xml");
 		/*
 		 * 1. SqlSessionFactoryBuilder
 		 */
-		SqlSessionFactoryBuilder sqlSessionFactoryBuilder=new SqlSessionFactoryBuilder();
-
+		SqlSessionFactoryBuilder sqlSessionFactoryBuilder=
+				new SqlSessionFactoryBuilder();
 		/*
 		 * 2. SqlSessionFactory
 		 */
 		SqlSessionFactory sqlSessionFactory=
 				sqlSessionFactoryBuilder.build(myBatisConfigInputStream);
-
 		/*
 		 * 3. SqlSession open
 		 */
@@ -42,20 +41,25 @@ public class MyBatisMapperInterfaceFlowMain {
 		/*
 		 * 4. StudentMapper[MapperInterface]객체생성
 		 */
-		StudentMapper studentMapper=sqlSession.getMapper(StudentMapper.class);
+		StudentMapper studentMapper = 
+				sqlSession.getMapper(StudentMapper.class);
+		
 		/*
 		org.apache.ibatis.binding.MapperProxy
 		 */
-		System.out.println(studentMapper);
+		System.out.println("MapperProxy:"+studentMapper);
 		/*
 		 * 5. StudentMapper[MapperInterface]객체사용[CRUD]
 		 */
-		List<Student> studentList= studentMapper.findAllStudents();
-		System.out.println(studentList);
+		List<Student> studentList=
+				studentMapper.findAllStudents();
+		System.out.println("#### findAllStudents:"+studentList);
 		
-		Student student=studentMapper.findStudentById(3);
+		Student student=
+				studentMapper.findStudentById(3);
+		System.out.println("#### findStudentById:"+student);
 		/*
-		 * 5. SqlSession close
+		 * 6. SqlSession close
 		 */
 	}
 }

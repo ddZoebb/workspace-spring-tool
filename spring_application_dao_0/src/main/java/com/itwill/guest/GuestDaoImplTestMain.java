@@ -17,17 +17,15 @@ public class GuestDaoImplTestMain {
 		System.out.println("----Spring Container초기화끝[ApplicationContext객체생성끝]");
 		GuestDao guestDao=
 				(GuestDao)applicationContext.getBean(GuestDao.class);
+		
 		System.out.println("### GuestDao.selectAll():"+guestDao.selectAll());
-		System.out.println("### GuestDao.selectByNo(6):"+guestDao.selectByNo(6));
-		Guest guest=guestDao.selectByNo(6);
-		guest.setGuest_name("차은우");
-		guest.setGuest_title("추석 언제야");
+		Guest guest=guestDao.selectByNo(222);
+		System.out.println("### GuestDao.selectByNo(222):"+guest);
+		guest.setGuest_name("쭌우운~~");
+		guest.setGuest_title("오늘은 수요일 타이틀");
 		System.out.println("### GuestDao.updateGuest():"+guestDao.updateGuest(guest));
-		System.out.println("### GuestDao.selectByNo(6):"+guestDao.selectByNo(6));
-		
-		
-	
-
+		guest=guestDao.selectByNo(222);
+		System.out.println(guest);
 	}
 
 }

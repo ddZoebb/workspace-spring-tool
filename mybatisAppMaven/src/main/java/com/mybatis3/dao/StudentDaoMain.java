@@ -13,7 +13,7 @@ public class StudentDaoMain {
 		 **************************************************/
 		/*
 		  select sql의결과타입이 DTO[DTO List] 객체인경우
-		  resultType :  Dto
+		  resultType :  DTO
 		 */
 		System.out.println("---------findStudentById-----------------------------");
 		System.out.println(studentDao.findStudentById(7));
@@ -23,7 +23,6 @@ public class StudentDaoMain {
 		  select sql의결과타입이 DTO[DTO List] 객체인경우
 		  resultMap :  DTO
 		 */
-		
 		System.out.println("---------findStudentByIdResultMap--------------------");
 		System.out.println(studentDao.findStudentByIdResultMap(5));
 		System.out.println("---------findAllStudentsResultMap--------------------");
@@ -37,10 +36,17 @@ public class StudentDaoMain {
 		 */
 		System.out.println("---------findStudentByIdWithAddress------------------");
 		System.out.println(studentDao.findStudentByIdWithAddress(1));
-		System.out.println(studentDao.findStudentByIdWithAddress(7));
+		System.out.println(studentDao.findStudentByIdWithAddress(2));
+		/*********************************************************
+		 * SELECT[students + courses[course_enrollment] JOIN( 1 : N )
+		 ********************************************************/
+		/*
+		 * select sql의결과타입이 DTO,VO,Domain객체인경우
+		 * resultMap : studentWithCoursesResultMap
+		 */
 		System.out.println("---------findStudentByIdWithCourses------------------");
-		
 		System.out.println(studentDao.findStudentByIdWithCourses(1));
+		System.out.println(studentDao.findStudentByIdWithCourses(2));
 		
 		/**************************************************
 		INSERT
@@ -49,13 +55,14 @@ public class StudentDaoMain {
 		parameterType: DTO,VO,Domain
 		*/
 		System.out.println("---------insertStudent(Dto)--------------------------");
-		System.out.println(studentDao.insertStudent(new Student(null,"인서트","insert@naver.com",new Date(),null)));
+		System.out.println(studentDao.insertStudent(new Student(null, "김가네", "kim@naver.com",new Date(), null)));
 		System.out.println("---------insertStudentBySequence1--------------------");
-		Student insertStudent=new Student(null, "시퀀스", "sequence@naver.com", new Date(), null);
-		System.out.println(studentDao.insertStudentBySequence1(insertStudent));
+		Student insertStudent=
+			new Student(null, "시퀀스","sequence@naver.com" , new Date(), null);
+		System.out.println("insert row count:"+studentDao.insertStudentBySequence1(insertStudent));
 		System.out.println("insert sequence:"+insertStudent.getStudId());
-		System.out.println("---------insertStudentBySequence1--------------------");
-		System.out.println(studentDao.insertStudentBySequence2(insertStudent));
+		System.out.println("---------insertStudentBySequence2--------------------");
+		System.out.println("insert sequence:"+studentDao.insertStudentBySequence2(insertStudent));
 		
 		/**************************************************
 		 UPDATE
@@ -64,7 +71,11 @@ public class StudentDaoMain {
 		 parameterType: DTO,VO,Domain
 		 */
 		System.out.println("---------updateStudentById---------------------------");
-		System.out.println(studentDao.updateStudentById(new Student(11,"업데이트","update@daum.net",new Date(),null)));
+		Student student=studentDao.findStudentById(1);
+		student.setDob(new Date());
+		student.setEmail("change222@gmail.com");
+		student.setName("김윤수");
+		System.out.println("update row count:"+studentDao.updateStudentById(student));
 		/**************************************************
 		 DELETE
 		 ***************************************************/
@@ -72,7 +83,8 @@ public class StudentDaoMain {
 		parameterType: java.lang.Integer,java.lang.String
 		*/
 		System.out.println("---------deleteStudentById---------------------------");
-		System.out.println(studentDao.deleteStudentById(12));
+		System.out.println("delete row count:"+
+		studentDao.deleteStudentById(25));
 		
 		
 	}

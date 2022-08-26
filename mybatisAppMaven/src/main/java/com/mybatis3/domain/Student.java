@@ -12,14 +12,12 @@ ADDR_ID          NUMBER(11)
 */
 public class Student
 {
-
 	private Integer studId;
 	private String name;
 	private String email;
 	private Date dob;
 	//private int addrId;//FK
 	private Address address;
-	
 	private List<Course> courseList;
 	
 	
@@ -36,17 +34,10 @@ public class Student
 	}
 	
 	
-	
-	
-	
-
-	public Student(Integer studId, String name, String email, Date dob, Address address, List<Course> courseList) {
-		super();
-		this.studId = studId;
-		this.name = name;
-		this.email = email;
-		this.dob = dob;
-		this.address = address;
+	public List<Course> getCourseList() {
+		return courseList;
+	}
+	public void setCourseList(List<Course> courseList) {
 		this.courseList = courseList;
 	}
 	public Integer getStudId() {
@@ -84,12 +75,7 @@ public class Student
 		return "Student [studId=" + studId + ", name=" + name + ", email=" + email + ", dob=" + dob + ", address="
 				+ address + ", courseList=" + courseList + "]";
 	}
-	public List<Course> getCourseList() {
-		return courseList;
-	}
-	public void setCourseList(List<Course> courseList) {
-		this.courseList = courseList;
-	}
+	
 	
 	
 }
