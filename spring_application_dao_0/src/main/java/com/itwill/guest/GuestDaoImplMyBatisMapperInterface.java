@@ -10,7 +10,7 @@ import com.itwill.guest.mapper.GuestMapper;
 
 @Repository
 public class GuestDaoImplMyBatisMapperInterface implements GuestDao{
-	@Autowired
+	@Autowired(required = false)
 	private GuestMapper guestMapper;
 	public GuestDaoImplMyBatisMapperInterface() {
 		System.out.println("#### GuestDaoImplMyBatisMapperInterface()기본생성자");
