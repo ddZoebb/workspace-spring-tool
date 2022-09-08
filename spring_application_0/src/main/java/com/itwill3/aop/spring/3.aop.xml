@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+	<!-- target object[core concern] -->
+	<bean id="userDao" class="com.itwill.user.UserDaoImpl"/>
+	<bean id="userService"  class="com.itwill.user.UserServiceImpl">
+		<property name="userDao" ref="userDao"/>
+	</bean>
+	
+	<!-- Advice [crosscutting concern]-->
+	<bean id="loggingBeforeAdvice" 
+		class="com.itwill3.aop.spring.LoggingBeforeAdvice"/>
+	
+	<bean id="profilingAroudAdvice" 
+		class="com.itwill3.aop.spring.ProfilingAroundAdvice"/>
+	
+	<bean id="emailSendAfterThrowingAdvice" 
+		class="com.itwill3.aop.spring.EmailSendAfterThrowingAdvice"/>
+				
+	<!-- weaving[target + advice ]-->
+	<aop:aspectj-autoproxy/>
+	<aop:config>
+		 <aop:aspect ref="loggingBeforeAdvice">
+		 	<aop:pointcut expression="execution(* com.itwill.user.UserService.find*(..))" id="loggingBeforePointCut"/>
+		 	<aop:before method="beforeLog" pointcut-ref="loggingBeforePointCut"/>
+		 </aop:aspect>
+		<aop:aspect ref="profilingAroudAdvice">
+			<aop:around method="aroundProfiling" pointcut="execution(* com.itwill.user.UserService.*(..))"/>
+		</aop:aspect>
+	
+		<aop:aspect ref="emailSendAfterThrowingAdvice">
+			<aop:after-throwing method="emailSend" throwing="exObj" pointcut="execution(* com.itwill.user.*.*(..))"/>
+		</aop:aspect>
+		
+	</aop:config>
+	<!--
+		<< pointcut expression >>
+		
+		execution("수식어 리턴타입 패키지명.클래스명.메서드명(파라미터)")
+ 				명시자 표현식을 위와 같은 순서로 형식으로 입력합니다. 
+ 				'*'은 나타낼 수 있는 모든 값을 나타내고 '..' 하나 이상의 값을 나타냅니다.
+		
+		execution(* com.itwill.user.UserService.findUserList())
+		execution(* com.itwill.user.UserService.find*(..))
+		execution(* com.itwill.user.UserService.*(..))
+		execution(* com.itwill.user.UserService.*(*,*))
+		execution(* com.itwill.user.UserService.*(String,*))
+		execution(* com.itwill.user.UserService.*(String,String))
+		execution(* com.itwill.user.User*.*(..))
+		execution(* com.itwill.user.*.*(..))
+		execution(* com.itwill.*.*(..))
+		execution(* *..UserDao.*(..))	
+		
+		within(some.package.SomeService)
+			- SomeService 인터페이스 내 모든 메서드 호출
+		within(some.package.*)
+			- some.package 패키지 내 모든 메서드 호출
+		within(some.package..*)
+			- some.package 패키지 및 하위 패키지                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        내 모든 메서드 호출
+		bean(someServiceBean)
+			- 이름이 someServiceBean인 빈의 메서드 호출
+		bean(*Service)
+			- 이름이 Service로 끝나는 빈의 메서드 호출
+	 -->
+</beans>
+
+
+
+
+
+
+
+
+
+
+

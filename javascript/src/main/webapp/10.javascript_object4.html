@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+	/*
+	생성자함수
+	 */
+	var o = new Object();
+	var stringObject = new String("문자열");
+	var numberObject = new Number(34);
+
+	var arrayObject = new Array();
+	var dateObject = new Date();
+
+	/*
+	학생객체를 생성해서 반환해주는 <<< 생성자함수 >>> 작성
+	 */
+	function Student(id, name, kor, eng, math) {
+		/*
+		호출 new Student('xxx','KIM',34,54,65);
+		1.Object객체생성({})
+		2.생성된 Object객체(this)에 속성 추가 
+		3. 생성된 Object객체(this) 반환
+		 */
+		this.id = id;
+		this.name = name;
+		this.kor = kor;
+		this.eng = eng;
+		this.tot = 0;
+		this.avg = 0.0;
+
+		this.calculateTot = function() {
+			this.tot = this.kor + this.eng + this.math;
+		};
+		this.calculateAvg = function() {
+			this.avg = this.tot / 3;
+		};
+		this.toString = function() {
+			return '[' + this.id + ']' + this.name + this.tot + this.avg;
+		};
+	}
+	window.Student();
+	console.log(window);
+
+	Student('xxx', 34, 54, 65);
+	Student('yyy', 23, 76, 98);
+
+	/****************학생객체****************/
+	var studentObject1 = new Student('xxx', 'KIM', 34, 54, 65);
+	var studentObject2 = new Student('yyy', 'LEE', 34, 65, 76);
+	var studentObject3 = new Student('zzz', 'CHOI', 64, 76, 87);
+	var studentArray = [ studentObject1, studentObject2, studentObject3 ];
+</script>
+</head>
+<body>
+	<h1>생성자 함수3</h1>
+	<hr>
+	<script type="text/javascript">
+		document.write('--------------student 리스트---------------------<br>');
+		for (var i = 0; i < studentArray.length; i++) {
+			studentArray[i].calculateTot();
+			studentArray[i].calculateAvg();
+			document.write(studentArray[i].toString() + "<br>");
+		}
+	</script>
+</body>
+</html>
+
+
+
+
+
+
+

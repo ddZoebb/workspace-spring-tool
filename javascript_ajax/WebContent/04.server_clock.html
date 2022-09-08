@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<script type="text/javascript">
+	
+	function requestServerTime(){
+		xhr=new XMLHttpRequest();
+		xhr.open('GET','04.server_clock.jsp');
+		xhr.onload=responseServerTime;
+		xhr.send(null);
+	}
+	
+	function responseServerTime(){
+		document.querySelector('#serverTimeSpan').innerHTML=xhr.responseText;
+	}
+	
+	window.onload=function(){
+		/*
+		1초마다 한번씩 requestServerTime함수실행
+		*/
+		//window.setInterval("requestServerTime()",1000);
+		window.setInterval(requestServerTime,1000);
+	   
+	};
+	
+</script>
+</head>
+<body>
+<h1>clock[window.setTimeout,window.setInterval]</h1><hr/>
+<div>현재서버의시간은 <span id='serverTimeSpan'>12:45:45</span></div>
+</body>
+</html>
+
+

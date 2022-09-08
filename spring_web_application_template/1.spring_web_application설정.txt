@@ -1,0 +1,94 @@
+0.pom.xml파일 project name변경(contextPath)-------------------------------------------------
+	...
+	<groupId>com.itwill</groupId>
+	<artifactId>spring_web_application</artifactId>
+	<name>spring_web_application</name>
+	...
+	
+	A.java.version 와 spring-framework.version 설정
+		################################################
+			<properties>
+				<java-version>1.8</java-version>
+				<org.springframework-version>4.3.30.RELEASE</org.springframework-version>
+				...
+			</properties>
+		################################################	
+		
+		B.	java compiler설정
+		#################################################
+			<build>
+		        <plugins>
+		           ...
+		            <plugin>
+		                <groupId>org.apache.maven.plugins</groupId>
+		                <artifactId>maven-compiler-plugin</artifactId>
+		                <version>3.8.1</version>
+		                <configuration>
+		                    <source>${java-version}</source>
+		                    <target>${java-version}</target>
+		                    ...
+		                </configuration>
+		            </plugin>
+		            ...
+		        </plugins>
+		    </build>
+		##############################################	
+		
+		C.		
+			<!-- war plugin -->
+		#################################################
+			<build>
+		        <plugins>
+		           ...	
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-war-plugin</artifactId>
+						<version>3.3.2</version>
+						<configuration>
+							<failOnMissingWebXml>false</failOnMissingWebXml>
+						</configuration>
+					</plugin>
+		            ...
+		        </plugins>
+		    </build>
+		##############################################	
+		
+		D. servlet ,jsp dependency설정(버젼변경)  
+	    ################################################		
+			<!-- servlet -->
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>javax.servlet-api</artifactId>
+				<version>4.0.1</version>
+				<scope>provided</scope>
+			</dependency>
+			<!-- jsp -->
+			<dependency>
+				<groupId>javax.servlet.jsp</groupId>
+				<artifactId>javax.servlet.jsp-api</artifactId>
+				<version>2.3.3</version>
+				<scope>provided</scope>
+			</dependency>
+			<!-- jstl -->
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>jstl</artifactId>
+				<version>1.2</version>
+			</dependency>	
+			
+			E. log4j dependency설정
+		################################################ 
+			<dependency>
+			    <groupId>log4j</groupId>
+			    <artifactId>log4j</artifactId>
+			    <version>1.2.17</version>
+			</dependency>
+		  
+		   log4j.properties(log4j.xml)파일을 resources 디렉토리에 생성(classpath root)
+		
+		
+		<dependency>
+			<groupId>com.oracle.database.jdbc</groupId>
+			<artifactId>ojdbc6</artifactId>
+			<version>11.2.0.4</version>
+		</dependency>	

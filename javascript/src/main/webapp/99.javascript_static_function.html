@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+/********************************************/
+function Member(id,name){
+    this.id=id;
+    this.name=name;
+}
+Member.prototype.instance_method1=function(){
+    document.write("Member객체.instance_method1()"+this.id+","+this.name+"<br>");
+}
+Member.static_method=function(){
+    document.write("Member함수.static_method1()<br>");
+}
+
+/********************************************/
+</script>
+
+</head>
+<body>
+<h1>javascript static function</h1><hr/>
+<script type="text/javascript">
+    /****************instance method호출************/
+	var m1=new Member(1,'심연보');
+	var m2=new Member(2,'심술보');
+	m1.instance_method1();
+    m2.instance_method1();
+    
+	/****************static method호출************/
+	var no=Math.round(347.3432);
+	document.write("Math.round(347.6432)-->"+no+"<br>");
+	Member.static_method();
+	
+</script>
+</body>
+</html>

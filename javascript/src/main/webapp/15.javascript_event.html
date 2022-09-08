@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+	function displayMessage(msg) {
+		resultDivE.innerHTML += msg + "<br>";
+
+	}
+
+	function inlineEventHandler(e) {
+		var msg = "inlineEventHandler-->이벤트 타겟(이벤트 발생 원천=소스):" + e.target
+				+ ",이벤트타입:" + e.type;
+		divplayMessage(msg);
+	}
+	function button2EventHandler(e) {
+		var msg = "button2EventHandler-->이벤트 타겟(이벤트 발생 원천=소스):" + e.target
+				+ ",이벤트타입:" + e.type;
+		divplayMessage(msg);
+
+	}
+	function button3EventHandler1(e) {
+		var msg = "button3EventHandler-->이벤트 타겟(이벤트 발생 원천=소스):" + e.target
+				+ ",이벤트타입:" + e.type;
+		divplayMessage(msg);
+
+	}
+	function button3EventHandler2(e) {
+		var msg = "button3EventHandler-->이벤트 타겟(이벤트 발생 원천=소스):" + e.target
+				+ ",이벤트타입:" + e.type;
+		divplayMessage(msg);
+
+	}
+
+	/*
+	이벤트등록함수(실행시점 DOMTree로딩완료시점에실행)
+		1. body맨마직막
+		2. window.onload 이벤트발생시호출 
+	 */
+	function event_regist() {
+		alert(' >>>> 실행시점 DOMTree로딩완료후 랜더링전시점에실행');
+		/*** DOM LEVEL - 0 ***/
+		var button2E = document.getElementById('button2');
+		/*********CASE1*******/
+		button2E.onclick = button2EventHandler;
+		/*********CASE2******/
+		button2E.onclick = function(e) {
+			var msg = "inlineEventHandler익명함수-->이벤트 타겟(이벤트 발생 원천=소스):"
+					+ e.target.value + ",이벤트타입:" + e.type;
+			divplayMessage(msg);
+		};
+
+		/*
+		https://www.w3schools.com/
+		 */
+		/*** DOM LEVEL - 2 ***/
+		var button3E = document.getElementById('button3');
+		button3E.addEventListener('click', button3EventHandler1);
+		button3E.addEventListener('click', button3EventHandler2);
+		button3E
+				.addEventListener(
+						'mouseover',
+						function() {
+							var msg = "button3EventHandler익명 - mouseover-->이벤트 타겟(이벤트 발생 원천=소스):"
+									+ e.target + ",이벤트타입:" + e.type;
+							divplayMessage(msg);
+						});
+		button3E
+				.addEventListner(
+						'mouseout',
+						function(e) {
+							var msg = "button3EventHandler익명 - mouseout-->이벤트 타겟(이벤트 발생 원천=소스):"
+									+ e.target + ",이벤트타입:" + e.type;
+							divplayMessage(msg);
+
+						});
+
+		var movie_rankOrderedListElement = document
+				.getElementById('movie_rank');
+		var movie_rankListElementArray = movie_rankOrderedListElement
+				.getElementsByTagName("li");
+		var movie_rankListElementArray = movie_rankOrderedListElement.children;
+		var movie_rankListElementArray = movie_rankOrderedListElement.childNodes;
+
+		/*
+			<< element1의 하위노드만검색 >>
+			element1.getElementById();
+			element1.getElementsByTagName();
+			
+			<< docuemnt 의 하위노드만검색[돔트리전체] >>
+			document.getElementById();
+			document.getElementsByTagName();
+		 */
+
+		for (var i = 0; i < movie_rankListElementArray.length; i++) {
+			movie_rankListElementArray[i].addEventListener('click', function() {
+				var clickElement = e.target;
+				displayMessage('click한 영화 :'+clickElement. innerHTML);
+				clickElement.style.background='gray';
+
+			});
+		}
+	};
+	/*
+	window.onload 이벤트발생시점
+	   -DOM Tree 생성직후 렌더링전에호출  이벤트등록
+	 */
+	/* window.onload = function() {
+		event_regist();
+	} */
+	
+	window.addEventListener('load',function(){
+		event_regist();	
+	});
+</script>
+</head>
+<body>
+	<h1>javascript event</h1>
+	<hr />
+	<form name="f">
+		<input name="button1" type="button" value="event model[inline]"
+			onclick="inlineEventHandler(event);" /> <input id="button2"
+			name="button2" type="button" value="event model[DOM level0]" /> <input
+			id="button3" name="button3" type="button"
+			value="event model[DOM level2]" /> <input id="button4"
+			name="button4" type="button" value="event remove" />
+	</form>
+	<ol id='movie_rank'>
+		<li>조커</li>
+		<li>람보</li>
+		<li>AI</li>
+		<li>알라딘</li>
+		<li>체르노빌</li>
+	</ol>
+	<ol id='drama_rank'>
+		<li>도깨비</li>
+		<li>사랑과전쟁</li>
+		<li>나너</li>
+		<li>우리나라</li>
+		<li>대한민국</li>
+	</ol>
+	<div id="result"></div>
+</body>
+</html>
