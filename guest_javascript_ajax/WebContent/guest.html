@@ -12,101 +12,296 @@
 <script type="text/javascript" src="js/guest_html_content.js"></script>
 <script type="text/javascript" src="js/GuestService.js"></script>
 <script type="text/javascript">
+	var name = '이주희';
+	var age = 26;
 
+	function func1() {
+		return `이름은 ${name}, 나이는 ${age}`;
+	}
+
+	var html2 = `${func1()}`;
+	console.log(html2);
+
+	var noArray = [ 1, 2, 3, 4, 5 ];
+
+	function addOne(element) {
+		return element + 1;
+	}
+	/* var newArray=noArray.map(function(element){
+	 return element+100;
+	 }); */
+	var newArray = noArray.map(addOne);
+	console.log(noArray);
+	console.log(newArray);
+	var newNoArrayStr = newArray.join(",");
 </script>
 <script type="text/javascript">
-function sendRequest(method,url,myFunction,param){
-	var xhr=new XMLHttpRequest();
-	xhr.open(method,url);
-	xhr.onload=function(){				
-		myFunction(xhr);
-	};
-	xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-	xhr.send(param);
-}
-	
-	window.addEventListener('load',function(){
-		var guestService=new GuestService();
-		
-		/*
-		DOM Tree 가 생성된 후 이벤트 등록 
-		*/
-	    /*############### event#################*/
-	    /******guest_home******************/
-		document.querySelector('#menu_guest_home').addEventListener('click',function(e){
-			document.querySelector('#content').innerHTML=guest_main_content();
-			e.preventDefault();
-		});
-		
-		document.querySelector('#menu_guest_write_form').addEventListener('click',function(e){
-			document.querySelector('#content').innerHTML=guest_write_form_content();
-			e.preventDefault();
-		});
-		
-		document.querySelector('#menu_guest_list').addEventListener('click',function(e){
-			//guest/guest_list_json.jsp 로 ajax요청 
-			
-			var method='GET';
-			var url='guest/guest_list_json.jsp';
-			var param='guest_no=67';
-			
-		
-			
-			guestService.sendRequest(method,url,function(jsonResult){
-				var guestList=jsonResult.data;
-				var html='';
-				for (var i = 0; i < guestList.length; i++) {
-					var guest=guestList[i];
-					html+=`<tr class="guest_item">
-						<td width="50" align="center" bgcolor="ffffff" height="20">${guestList[i].guest_no}</td>
-						<td width="300" bgcolor="ffffff" style="padding-left: 10">
-							<a href="#" class="user" class="guest_item_a" guest_no="${guestList[i].guest_no}">${guest.guest_title}
-						</a>
-						</td>
-						<td width="120" align="center" bgcolor="ffffff">${guestList[i].guest_name}</td>
-						<td width="120" align="center" bgcolor="ffffff">${guestList[i].guest_title}</td>
-					</tr>`;
-				}
-				document.querySelector('#content').innerHTML=guest_list_content(html);
-			},param);
-			
-			
-			
-			
-			
-		});
-		
-		
-		
-		
-	    /*############### dynamic event#################*/
-	    document.addEventListener('click',function(e){
-			/************guest_list****************/
-			/************guest_write_form****************/
-			/******guest_detail****************/
-			/******guest_write_action***********/
-			/******guest_modify_form***********/
-			/******guest_modify_action*********/
-			/******guest_remove_action*********/
-		 });
-	    
-		
-		
-		
-		
-		
-	    
-	});
-	
-	
-	
+	function sendRequest(method, url, myFunction, param) {
+		var xhr = new XMLHttpRequest();
+		xhr.open(method, url);
+		xhr.onload = function() {
+			myFunction(xhr);
+		};
+		xhr.setRequestHeader('Content-Type',
+				'application/x-www-form-urlencoded');
+		xhr.send(param);
+	}
 
+	window
+			.addEventListener(
+					'load',
+					function() {
+						var guestService = new GuestService();
 
+						/*
+						DOM Tree 가 생성된 후 이벤트 등록 
+						 */
+						/*############### event#################*/
+						/******guest_home******************/
+						document
+								.querySelector('#menu_guest_home')
+								.addEventListener(
+										'click',
+										function(e) {
+											document.querySelector('#content').innerHTML = guest_main_content();
+											e.preventDefault();
+										});
 
+						document
+								.querySelector('#menu_guest_write_form')
+								.addEventListener(
+										'click',
+										function(e) {
+											document.querySelector('#content').innerHTML = guest_write_form_content();
+											e.preventDefault();
+										});
 
- 
+						/******guest_detail****************/
+						//	document.querySelectorAll('.guest_item_a').addEventListener('click',function(e){});
+
+						/*############### dynamic event#################*/
+						document
+								.addEventListener(
+										'click',
+										function(e) {
+
+											/*
+											Element 속성
+											 */
+											console.log("Event 객체:" + e);
+											console.log("EventTarget객체:"
+													+ e.target);
+											console.log("Element id:"
+													+ e.target.id);
+											console
+													.log("Element id:"
+															+ e.target
+																	.getAttribute("id"));
+											console.log("Element class:"
+													+ e.target.className);
+											console.log("Element class list:"
+													+ e.target.classList);
+											console
+													.log("Element class contain('guest_item_a'):"
+															+ e.target.classList
+																	.contains('guest_item_a'));
+
+											/******guest_detail****************/
+											if (e.target.classList
+													.contains('guest_item_a')) {
+												guestService
+														.sendRequest(
+																'GET',
+																'guest/guest_detail_json.jsp',
+																function(
+																		jsonResult) {
+																	var guest = jsonResult.data[0];
+																	document
+																			.querySelector('#content').innerHTML = guest_view_content(guest);
+																},
+																"guest_no="
+																		+ e.target
+																				.getAttribute('guest_no')
+
+														);
+											}
+											/************guest_list****************/
+
+											if (e.target.id == 'btn_guest_list'
+													|| e.target.id == 'menu_guest_list'
+													|| e.target.id == 'btn_guest_list_btn') {
+												var method = 'GET';
+												var url = 'guest/guest_list_json.jsp';
+												var param = null;
+
+												guestService
+														.sendRequest(
+																method,
+																url,
+																function(
+																		jsonResult) {
+																	var guestList = jsonResult.data;
+
+																	document
+																			.querySelector('#content').innerHTML = guest_list_content(guestList);
+																}, param);
+
+												e.preventDefault();
+											}
+											/************guest_write_form****************/
+											/******guest_write_action***********/
+											if (e.target.id == 'btn_guest_write_action') {
+
+												if (document.f.guest_name.value == "") {
+													alert("이름을 입력하십시요.");
+													document.f.guest_name
+															.focus();
+													return false;
+												}
+												if (document.f.guest_email.value == "") {
+													alert("이메일을 입력하십시요.");
+													document.f.guest_email
+															.focus();
+													return false;
+												}
+												if (document.f.guest_homepage.value == "") {
+													alert("홈페이지를 입력하십시요.");
+													document.f.guest_homepage
+															.focus();
+													return false;
+												}
+
+												if (document.f.guest_title.value == "") {
+													alert("제목을 입력하십시요.");
+													document.f.guest_title
+															.focus();
+													return false;
+												}
+												if (document.f.guest_content.value == "") {
+													alert("내용을 입력하십시요.");
+													document.f.guest_content
+															.focus();
+													return false;
+												}
+												var f = document.querySelector('#guest_write_form');
+												var param='';
+												param+='guest_name='+f.guest_name.value;
+												param+='&guest_email='+f.guest_email.value;
+												param+='&guest_homepage='+f.guest_homepage.value;
+												param+='&guest_title='+f.guest_title.value;
+												param+='&guest_content='+f.guest_content.value;
+												guestService
+														.sendRequest(
+																'POST',
+																'guest/guest_write_action_json.jsp',
+																function(jsonResult) {
+																	if(jsonResult.code==1){
+																		//리스트를 보여준다 
+																		/*
+																		#menu_guest_list anchor 의 click event 발생
+																		*/
+																		document.querySelector('#menu_guest_list').click();
+																	}else if(jsonResult.code==2){
+																		alert(jsonResult.msg);
+																	}
+																}, param);
+											}
+											/******guest_modify_form***********/
+											if(e.target.id=='btn_guest_modify_form'){
+												var param='guest_no='+e.target.getAttribute('guest_no');
+												
+												guestService
+												.sendRequest('POST','guest/guest_modify_form_json.jsp',
+														function(jsonResult){
+													var guest=jsonResult.data[0];
+													document.querySelector('#content').innerHTML=guest_modify_form_content(guest);
+													
+												},
+														param);
+											}
+											/******guest_modify_action*********/
+											if (e.target.id == 'btn_guest_modify_action') {
+
+												if (document.f.guest_name.value == "") {
+													alert("이름을 입력하십시요.");
+													document.f.guest_name
+															.focus();
+													return false;
+												}
+												if (document.f.guest_email.value == "") {
+													alert("이메일을 입력하십시요.");
+													document.f.guest_email
+															.focus();
+													return false;
+												}
+												if (document.f.guest_homepage.value == "") {
+													alert("홈페이지를 입력하십시요.");
+													document.f.guest_homepage
+															.focus();
+													return false;
+												}
+
+												if (document.f.guest_title.value == "") {
+													alert("제목을 입력하십시요.");
+													document.f.guest_title
+															.focus();
+													return false;
+												}
+												if (document.f.guest_content.value == "") {
+													alert("내용을 입력하십시요.");
+													document.f.guest_content
+															.focus();
+													return false;
+												}
+												
+												var f = document.querySelector('#guest_modify_form');
+												var param='';
+												param+='guest_no='+f.guest_no.value;
+												param+='&guest_name='+f.guest_name.value;
+												param+='&guest_email='+f.guest_email.value;
+												param+='&guest_homepage='+f.guest_homepage.value;
+												param+='&guest_title='+f.guest_title.value;
+												param+='&guest_content='+f.guest_content.value;
+												
+												guestService.sendRequest("POST","guest/guest_modify_action_json.jsp",
+														function(jsonResult){
+													if(jsonResult.code==1){
+														var guest = jsonResult.data[0];
+														document.querySelector('#content').innerHTML = guest_view_content(guest);
+													}else if(jsonResult.code==2){
+														alert(jsonResult.msg);
+													}
+												},
+														param);
+												
+											}
+											/******guest_remove_action*********/
+											if(e.target.id=='btn_guest_remove_action'){
+												var param='guest_no='+e.target.getAttribute('guest_no');
+												guestService.sendRequest("POST","guest/guest_remove_action_json.jsp",
+														function(jsonResult){
+													if(jsonResult.code==1){
+														document.querySelector('#menu_guest_list').click();
+													}else if(jsonResult.code==2){
+														alert(jsonResult.msg);
+													}
+												},param);
+											}
+
+											e.preventDefault();
+										});
+
+						
+						//load 시 홈화면 보이게 함 
+						document.querySelector('#content').innerHTML=guest_main_content();
+						
+						
+						
+					});//load event end
 </script>
 </head>
+
+
 <body bgcolor=#FFFFFF text=#000000 leftmargin=0 topmargin=0
 	marginwidth=0 marginheight=0>
 	<!-- container start-->

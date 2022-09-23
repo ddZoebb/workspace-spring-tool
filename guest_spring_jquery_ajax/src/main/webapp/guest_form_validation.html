@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>방명록 관리</title>
+<link rel=stylesheet href="css/styles.css" type="text/css">
+<link rel=stylesheet href="css/guest.css" type="text/css">
+<link rel="icon" href="image/favicon-32x32.png">
+<style type="text/css" media="screen">
+</style>
+<style type="text/css">
+/*****************form validator css추가************/
+input.error,textarea.error{
+	border: 1px solid red;
+}
+label.error{
+	margin-left:10px;
+	color:orange;
+}
+.valid{
+	border: 1px solid green;
+}
+</style>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<!-- jquery validator plugin cdn -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.js"></script>
+<script type="text/javascript" src="js/guest_html_content.js"></script>
+<script type="text/javascript">
+</script>
+<script type="text/javascript">
+$(function(){
+    /*
+    DOM Tree가 생성된후이벤트등록
+    */
+    /*###############################[form validator plugin]##########################
+    form validator
+	 - HOMEPAGE :   https://jqueryvalidation.org/
+	 - API      :   https://jqueryvalidation.org/validate/
+		1. $(form).validate() function은 form loading시에 미리 호출되어있어야한다.
+		2. var validator=$(form).validate(); 실행후 반환되는 validator 객체를 사용한다.
+	#################################################################################/
+	
+	/* validator객체변수선언 */
+	var validator=null;
+	/*validator객체 디폴트속성 설정*/
+    $.validator.setDefaults({
+			rules:{
+				guest_name:{
+					required:true,
+					minlength: 3,
+					maxlength: 10
+				},
+				guest_title:{
+					required: true
+				},
+				guest_content:{
+					required: true
+				},
+				guest_homepage:{
+					required: true,
+					url:true
+				},
+				guest_email:{
+					required: true,
+					email:true
+				}
+				
+			},
+			messages:{
+				guest_name:{
+					required: "이름을 입력하세요",
+					minlength: "이름은 {0} 글자이상입니다.",
+					maxlength: "이름은 {0} 글자이하입니다."
+				},
+				guest_title:{
+					required: "제목을 입력하세요"
+				},
+				guest_content:{
+					required: "내용을 입력해주세요"
+				},
+				guest_homepage:{
+					required: "홈페이지를 입력해주세요",
+					url:'홈페이지 형식이틀렸어요'
+				},
+				guest_email:{
+					required: "이메일을 입력해 주세요",
+					email:'이메일 형식이틀렸어요'
+				}
+			},
+			errorClass:'error',
+			validClass:'valid'
+    });
+    /*########################## event ########################*/
+    /****************guest_home*******************************/
+    $('#menu_guest_home').click(function(e){
+		$('#content').html(guest_main_content());
+		e.preventDefault();
+    });
+    /***guest_write_form[form validator plugin]**/
+    $(document).on('click','#menu_guest_write_form,#btn_guest_write_form',function(e){
+			$('#content').html(guest_write_form_content());
+			/*
+			1. $(form).validate() function은 form loading시에 미리 호출되어있어야한다.
+		 	2. var validator=$(form).validate(); 실행후 반환되는 validator 객체를 사용한다.
+		 	*/
+		 	validator =  $('#guest_write_form').validate({
+		 	    rules:{
+		 			guest_name:{
+		 			    required:true,
+		 			    minlength:5,
+		 			    maxlength:7
+		 			}
+		 	    },
+		 	    messages:{
+			 		guest_name:{
+		 			    required:'이름을 입력하세요',
+		 			    minlength:'이름은 {0} 글자이상입니다',
+		 			    maxlength:'이름은 {0} 글자이하입니다'
+		 			}
+		 	    },
+		 	    errorClass:'error',
+		 	    validClass:'valid'
+		 	});
+			e.preventDefault();
+	});
+  
+    /***guest_detail**********************************/
+    $(document).on('click','.guest_item_a',function(e){
+		var guest_no = e.target.getAttribute('guest_no');
+		var guest_no = $(e.target).attr('guest_no');
+		
+		var param='guest_no='+guest_no;
+		$.ajax({
+		    url:'guest_detail_json',
+		    method:'GET',
+		    dataType:'json',
+		   	data:param,
+		    success:function(jsonResult){
+				$('#content').html(guest_view_content(jsonResult.data[0]));
+		    }
+		});
+		
+		e.preventDefault();
+    });
+    /*********guest_list******************/
+    $(document).on('click','#menu_guest_list,#btn_guest_list',function(e){
+		$.ajax({
+		    url:'guest_list_json',
+		    method:'GET',
+		    success:function(jsonResult){
+				var guestArray = jsonResult.data;
+				$('#content').html(guest_list_content(guestArray));
+		    }
+		});
+		e.preventDefault();
+    });
+    
+    /********* guest_write_action[form validator plugin]******************************/
+    $(document).on('click','#btn_guest_write_action',function(e){
+		/* 
+		1. $(form).validate() function은 form loading시에 미리 호출되어있어야한다.
+	 	2. var validator=$(form).validate(); 실행후 반환되는 validator 객체를 사용한다.
+	 	3. validator.form()메쏘드를 호출해서 유효성여부를 체크한다.
+	 	*/ 
+	 	if(validator.form()){
+	 	    console.log('validation success!!!');
+	 	} 
+	 	
+	});
+
+    
+   /*********guest_modify_form[form validator plugin]***********/
+   $(document).on('click','#btn_guest_modify_form',function(e){
+		
+		var param = 'guest_no='+$(e.target).attr('guest_no');
+		$.ajax({
+		    url:'guest_modify_form_json',
+		    method:'POST',
+		    data:param,
+		    dataType:'json',
+		    success:function(jsonResult){
+				$('#content').html(guest_modify_form_content(jsonResult.data[0]));
+				 //1. $(form).validate() function은 form loading시에 미리 호출되어있어야한다.
+			 	 //2. var validator=$(form).validate(); 실행후 반환되는 validator 객체를 사용한다.
+				 validator=$('#guest_modify_form').validate();
+		    }
+		});
+		
+   });
+  
+   
+   
+    /*********guest_modify_action[form validator plugin]*********/
+    $(document).on('click','#btn_guest_modify_action',function(e){
+		 //1. $(form).validate() function은 form loading시에 미리 호출되어있어야한다.
+		 //2. var validator=$(form).validate(); 실행후 반환되는 validator 객체를 사용한다.
+		 //3. validator.form() 메소드 호출해 유효성 여부 체크 
+		if(validator.form()){
+		 var param=$('#guest_modify_form').serialize();
+			$.ajax({
+			    url:'guest_modify_action_json',
+			    method:'POST',
+			    data:param,
+			    dataType:'json',
+			    success:function(jsonResult){
+					if(jsonResult.code==1){
+					    var param='guest_no='+$("#guest_modify_form input[name='guest_no']").val();
+					    console.log(param);
+						$.ajax({
+						    url:'guest_detail_json',
+						    method:'GET',
+						    dataType:'json',
+						   	data:param,
+						    success:function(jsonResult){
+								$('#content').html(guest_view_content(jsonResult.data[0]));
+						    }
+						});
+					}else if(jsonResult.code==2){
+					    alert(jsonResult.msg);
+					}
+			    }
+			});
+		}
+    });
+    
+    
+    
+    /*********guest_remove_action*********/
+    $(document).on('click','#btn_guest_remove_action',function(e){
+		var param='guest_no='+$(e.target).attr('guest_no');
+		$.ajax({
+			url:'guest_remove_action_json',
+			method:'POST',
+			dataType:'json',
+			data:param,
+			success:function(jsonResult){
+			    if(jsonResult.code==1){
+				   /*
+				    삭제성공시 guest list보여주기
+				     - #menu_guest_list anchor의 click event trigger[발생]
+					 */
+				  $('#menu_guest_list').trigger('click'); 
+			    }else if(jsonResult.code==2){
+					alert(jsonResult.msg);
+			    }
+			}
+		});
+    });
+    /****************jQuey Ajax Global Event****************/
+    $(document).ajaxStart(function(){
+		//progress dialog show
+		$("<div id='loading'>loading...</div>").insertBefore('#content').show();
+    });
+    $(document).ajaxComplete(function(){
+		//progress dialog hide
+		$('#loading').hide();
+		$('#loading').remove();
+    });
+    /*
+    DOM Tree가 생성된후홈컨텐츠보여주기
+    */
+    $('#menu_guest_home').trigger('click'); 
+    
+});
+	
+
+	
+	
+	
+
+
+
+
+ 
+</script>
+</head>
+<body bgcolor=#FFFFFF text=#000000 leftmargin=0 topmargin=0
+	marginwidth=0 marginheight=0>
+	<!-- container start-->
+	<div id="container">
+		<!-- header start -->
+		<div id="header">
+			<!-- include_common_top.jsp start-->
+
+			<h1>
+				<a href="">방명록 SPRING - JQUERY</a>
+			</h1>
+			<!-- include_common_top.jsp end-->
+		</div>
+		<!-- header end -->
+		<!-- navigation start-->
+		<div id="navigation">
+			<!-- include_common_left.jsp start-->
+
+			<p>
+				<strong>메 뉴</strong>
+			</p>
+			<ul class="guest_menus">
+				<li><a id="menu_guest_home" href="test.jsp">방명록홈</a></li>
+				<li><a id="menu_guest_list" href="#">방명록리스트</a></li>
+				<li><a id="menu_guest_write_form" href="#">방명록쓰기폼</a></li>
+
+			</ul>
+			<!-- include_common_left.jsp end-->
+		</div>
+		<!-- navigation end-->
+		<!-- wrapper start -->
+		<div id="wrapper">
+			<!-- content start -->
+			<!-- include_content.jsp start-->
+
+			<div id="content">
+				
+			</div>
+			<!-- include_content.jsp end-->
+			<!-- content end -->
+		</div>
+		<!--wrapper end-->
+		<div id="footer">
+			<!-- include_common_bottom.jsp start-->
+
+			<p align="center">Copyright (&copy;) By Kimkyoungho.[김경호] All
+				rights reserved.</p>
+			<!-- include_common_bottom.jsp end-->
+		</div>
+	</div>
+	<!--container end-->
+</body>
+</html>

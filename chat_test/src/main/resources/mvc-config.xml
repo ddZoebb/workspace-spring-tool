@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util ">
+
+	<mvc:annotation-driven />
+	<mvc:default-servlet-handler />
+	<context:component-scan
+		base-package="com.itwill.controller" />
+	
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 
+		in the /WEB-INF/views directory -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	
+<!-- websocket handler -->
+	<bean id="replyEchoHandler" class="com.itwill.willsta.controller.ReplyEchoHandler"/>
+	
+	<websocket:handlers>
+		<websocket:mapping handler="replyEchoHandler" path="/replyEcho"/>
+		<websocket:handshake-interceptors>
+			<bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor" />
+		</websocket:handshake-interceptors>
+	</websocket:handlers>
+	
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.support.StandardServletMultipartResolver" />
+	<!-- <websocket:handlers>
+		<websocket:mapping handler="echoHandler"
+			path="/echo" />
+		<websocket:sockjs></websocket:sockjs>
+	</websocket:handlers>
+
+	<bean id="echoHandler"
+		class="com.tproject.util.EchoHandler" /> -->
+</beans>

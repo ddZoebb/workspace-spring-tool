@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h1>spring web application template</h1>
+<h1>spring web application template</h1><hr>
 </body>
 </html>
