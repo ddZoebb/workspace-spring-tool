@@ -19,6 +19,7 @@ public class GuestServiceImpl implements GuestService {
 	private GuestDao guestDao;
 	public GuestServiceImpl() {
 		System.out.println("1.#### GuestServiceImpl() 기본생성자");
+		System.out.println(guestDao);
 	}
 	public GuestServiceImpl(GuestDao guestDao) {
 		System.out.println("1.#### GuestServiceImpl(GuestDao guestDao) 생성자");

@@ -33,6 +33,7 @@ public class ChatServer {
 	@OnMessage
 	public void handleMessage(String msg, Session session) {
 		print("msg!!!!!!!!!!!!!!!!:"+msg);
+		print("sessiong: "+session);
 		// 로그인할 때: 1#유저명
 		// 대화  할 때: 2유저명#메세지		
 		int index = msg.indexOf("#", 2);

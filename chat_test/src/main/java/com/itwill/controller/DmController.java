@@ -30,6 +30,8 @@ public class DmController {
 	      String mName = memberInfo.get("member").getmName();
 	      return mId+","+mImage+","+mName;
 	   }
+	   
+	   
 	   @ResponseBody
 	   @RequestMapping(value = "/messages_room_create")
 	   public String messageRoomInsert(@RequestParam("mId") String mId,
