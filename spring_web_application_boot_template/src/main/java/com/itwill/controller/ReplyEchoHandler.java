@@ -1,31 +1,63 @@
 package com.itwill.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
+import javax.websocket.Session;
+import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
-import org.springframework.util.StringUtils;
-import org.springframework.web.socket.CloseStatus;
+import org.springframework.http.HttpRequest;
+import org.springframework.stereotype.Component;
+
 import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketSession;
-import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+
+
+
+@Component
 @ServerEndpoint("/replyEcho")
-public class ReplyEchoHandler extends TextWebSocketHandler {
-Map<String, WebSocketSession> userSessions=new HashMap<>();
+public class ReplyEchoHandler {
+//private Map<String, WebSocketSession> userSessions=new HashMap<>();
 
+private static Map<String, Session> userSessions=new HashMap();
+//private static List<Session> list=new ArrayList<Session>();
+
+
+
+
+
+ 
+//@PathParam("mId") String mId
 @OnOpen
+public void handleOpen(Session session) {
+	String mId=session.getQueryString();
+	System.out.println("연결 세션:"+session);
+	System.out.println("아이디:"+mId);
+	
+	userSessions.put(mId, session);
+}
+
+/*
 public void afterConnectionEstablished(WebSocketSession session) throws Exception{
 	System.out.println("연결 세션:"+session);
 	String mId=(String)session.getAttributes().get("user_id"); //session에 저장된 id 찾기
 	userSessions.put(mId, session);
 }
+*/
 
 @OnMessage
+public void handleMessage(String message,Session session) {
+	System.out.println("메세지 전송:"+session);
+}
+
+/*
 public void handleMessage(WebSocketSession session,TextMessage message) throws Exception{
 	System.out.println(message.getPayload());
 	String msg=message.getPayload(); // json형태의 문자열 
@@ -48,15 +80,20 @@ public void handleMessage(WebSocketSession session,TextMessage message) throws E
 		}
 	}
 }
+*/
 
 @OnClose
-@Override
+public void handleClose(Session session) {
+	System.out.println("socket 닫기:"+session);
+}
+
+/*
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 		// TODO Auto-generated method stub
-		super.afterConnectionClosed(session, status);
 		String mId=(String)session.getAttributes().get("user_id");
 		System.out.println("커넥션 끝:"+mId);
 	}
+	*/
 
 
 }

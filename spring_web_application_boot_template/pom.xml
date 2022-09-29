@@ -68,51 +68,48 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 		</dependency>
-		
+
 		<!-- JSON MessageConverter -->
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-annotations</artifactId>
-			<version>2.9.6</version>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-core</artifactId>
-			<version>2.9.6</version>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<version>2.9.6</version>
-		</dependency>
-		
+
+
+
+
+
 		<!-- JSON OBject -->
-		<!--기본 org.json  -->
+		<!--기본 org.json -->
 		<dependency>
-		    <groupId>org.json</groupId>
-		    <artifactId>json</artifactId>
-		    <version>20180813</version>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20180813</version>
 		</dependency>
-	
-		<!-- 구글 json 라이브러리  -->
+
+		<!-- 구글 json 라이브러리 -->
 		<dependency>
-		  <groupId>com.googlecode.json-simple</groupId>
-		  <artifactId>json-simple</artifactId>
-		  <version>1.1</version>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+			<version>1.1</version>
 		</dependency>
-		
+
 		<!-- WEB Socket -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-websocket</artifactId>
-			<version>${org.springframework-version}</version>
+
 		</dependency>
-		
+
 		<dependency>
 			<groupId>javax.websocket</groupId>
 			<artifactId>javax.websocket-api</artifactId>
-			<version>1.1</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-websocket</artifactId>
+		</dependency>
+
+
+
+
 	</dependencies>
 
 	<build>

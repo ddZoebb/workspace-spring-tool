@@ -31,7 +31,7 @@
 	if ($('#user').val().trim() != '') {
 	    // 연결
 	    ws = new WebSocket(url);
-
+		console.log(ws);
 	    // 소켓 이벤트 매핑
 	    ws.onopen = function(evt) {
 			console.log('서버 연결 성공');

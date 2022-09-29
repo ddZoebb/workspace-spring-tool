@@ -5,7 +5,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script src="js/chat.js"></script>s
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+<script src="js/chat.js"></script>
 </head>
 <body>
 <div class="container">
@@ -18,7 +20,7 @@
 				<td>
 					<button type="button" class="btn btn-default" id="btnConnect">연결</button>
 					<button type="button" class="btn btn-default" id="btnDisconnect"
-						disabled>종료</button>
+						>부르기</button>
 				</td>
 			</tr>
 			<tr>
@@ -26,6 +28,7 @@
 				<td colspan="2"><div id="send_ment">보낸 메세지</div>
 				<div id="receive_ment">받은 메세지</div>
 				</td>
+				<td colspan="2"><div id="content"></div></td>
 				
 				
 			</tr>

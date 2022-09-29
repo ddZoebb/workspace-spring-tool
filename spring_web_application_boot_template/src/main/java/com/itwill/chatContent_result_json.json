@@ -1,0 +1,21 @@
+{
+"code":1,
+"url":"url",
+"msg":"메세지",
+"your id":"상대방 아이디",
+"data":[{
+"c_content_no":"1",
+"c_content":"채팅 내용",
+"send_time":"보낸 시간",
+"c_read":"0",
+"user_id":"보낸 아이디",
+"c_room_no":"3"
+},{
+"c_content_no":"2",
+"c_content":"채팅 내용1",
+"send_time":"보낸 시간1",
+"c_read":"0",
+"user_id":"보낸 아이디1",
+"c_room_no":"3"}
+]
+}

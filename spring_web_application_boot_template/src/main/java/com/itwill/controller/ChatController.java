@@ -27,8 +27,9 @@ import com.itwill.service.ChatService;
 
 @Controller
 public class ChatController {
-	@Autowired
-	private ChatService chatService;
+	
+	 @Autowired private ChatService chatService;
+	 
 	
 	@RequestMapping(value = "/chat", method = { RequestMethod.GET })
 	public String chat(HttpServletRequest req, HttpServletResponse resp, HttpSession session) {
@@ -48,13 +49,16 @@ public class ChatController {
 	      return mId+","+mName;
 	   }
 	
-	//채팅방의 저장되어있던 데이터 보내기 
+	//채팅방의 저장되어있던 데이터  
+	
 	@ResponseBody
 	@GetMapping(value="/chat_detail")
 	public List<Chat_contents> chatDetail (@RequestParam("c_room_no") int c_room_no){
 		List<Chat_contents> chatDetailList=chatService.chatSellectByRoom(c_room_no);
 		return chatDetailList;
 	}
+	
+
 	
 	
 	//읽음(1)으로 변경

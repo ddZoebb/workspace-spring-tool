@@ -12,6 +12,9 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
+import org.springframework.stereotype.Component;
+
+@Component
 @ServerEndpoint("/chatserver")
 public class ChatServer {
 	

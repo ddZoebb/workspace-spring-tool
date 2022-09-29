@@ -25,6 +25,40 @@ function getContextPath(){
 }
 
 
+$(document).ready(function(){
+	
+	//$('#content').html('$(document)ready 성공');
+	
+	
+	console.log('$(document)ready 성공');
+	
+	$('#btnConnect').click(function(){
+		console.log('연결 버튼 클릭');
+		connectWS();
+	});
+});
+
+
+
+
+//채팅 부르기 
+
+$(document).on('click','#btnDisconnect',function(e){
+$.ajax({
+		url:"chat_detail_rest",
+		method:"GET",
+		
+		
+		success:function(jsonResult){
+			var chatContentArray=jsonResult.data;
+			console.log(chatContentArray[0]);
+			$('#content').html('채팅 불러오기 성공');
+		}
+		
+	});
+	});
+
+/*
 function getLoginId(){
 	$.ajax({
 		url:"sessionCheck",
@@ -78,10 +112,44 @@ function message_send_function(target){
     			});
 			}
 
+
+*/
+	
+
+function connectWS(){
+	var loginId="carrot1";
+	var url="ws://localhost:80/spring_web_application_boot_template/replyEcho?mId="+loginId;
+	var ws=new WebSocket(url);
+	socket=ws;
+	
+	ws.onopen = function(evt) {
+			console.log('서버 연결 성공');
+		
+	    };
+	ws.onerror=function(evt){
+		console.log('에러');
+	}
+	
+	ws.onmessage=function(evt){
+		console.log('메세지 얻기');
+	}
+	
+	ws.onclose=function(evt){
+		console.log('소켓 닫기');
+	}
+}
+			
+			
+/*
 function connectWS() {
-   var ws = new WebSocket(contextPath+"/replyEcho");
+   var url="ws://192.168.15.22:80/spring_web_application_boot_template/replyecho";
+   var ws = new WebSocket(url);
    socket = ws;
+   
+   
+   
    ws.onopen = function() { // connection이 open 되었을때 실행
+     
       // connection 이 close 되었을때 실행
       ws.onclose = function(event) { 
       setTimeout(function() {
@@ -118,4 +186,6 @@ function connectWS() {
       };
    };
    } 
+   */
+   
 
