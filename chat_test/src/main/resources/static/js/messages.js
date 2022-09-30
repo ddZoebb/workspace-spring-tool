@@ -116,6 +116,7 @@ function message_send_function(target){
       jsonData.dmContentsImage = mImage;                           //보낸사람 프로필 이미지
       jsonData.dmChatRead = 0;                                 //메세지 read 유무 flag
       if(jsonData.msg != null && jsonData.msg != "" && jsonData.msg != '&nbsp'){
+           /************/
             socket.send(jsonData.mId+","+jsonData.mIdYou+","+jsonData.msg+","+jsonData.msgDate+","+jsonData.dmNo+","+jsonData.dmContentsImage+","+jsonData.dmChatRead);
             $("#msg").val("");
             message_rightInsert_html(jsonData);
@@ -321,16 +322,23 @@ function connectWS() {
     	 var senderId = (event.data).split(',')[0];
     	 var mIdYou = (event.data).split(",")[1];
     	 var dmNo = (event.data).split(",")[4];
+    	
+    	
     	 if($('.main-conversation-box h3').text() == senderId){
              message_receive(event);
     	 }
+    	 
+    	 
     	 message_receive_noty(event);
+    	 
          let socketAlert = $('a#socketAlert');
          socketAlert.text("메세지가 도착했습니다.");
          socketAlert.css('display', 'block');
+         
          setTimeout(function() {
             socketAlert.css('display', 'none');
          },3000);	 
+         
       };
    };   
 }

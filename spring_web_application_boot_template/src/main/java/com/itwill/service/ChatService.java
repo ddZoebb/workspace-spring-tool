@@ -17,4 +17,6 @@ public interface ChatService {
 	public int deleteChatUpdate(int c_content_no);
 	
 	public int insertChat(Chat_contents chat_contents);
+	
+	public String testService();
 }

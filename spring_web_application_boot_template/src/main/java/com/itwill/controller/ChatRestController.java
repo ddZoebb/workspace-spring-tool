@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.itwill.domain.Chat_contents;
 import com.itwill.service.ChatService;
 
-@RestController
+//@RestController
 public class ChatRestController {
 	@Autowired
 	private ChatService chatService;
@@ -32,7 +32,7 @@ public class ChatRestController {
 	//채팅방의 저장되어있던 데이터  
 	
 	
-	@GetMapping(value="/chat_detail_rest", produces = "application/json;charset=UTF-8")
+	//@GetMapping(value="/chat_detail_rest", produces = "application/json;charset=UTF-8")
 	public Map chatDetail_rest() {
 		Map resultMap=new HashMap();
 		int code=1;

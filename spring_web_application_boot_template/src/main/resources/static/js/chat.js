@@ -5,16 +5,18 @@
 var socket=null;
 var loginId=null;
 var loginName=null;
+var yourId=null;
 var mImage=null;
+
+var c_room_no=null;
 var contextPath=getContextPath();
 
 var jsonData={
-	mId:null,
-	yourId:null,
-	contents:null,
-	sendtime:null,
-	c_room_no:null,
-	chat_read:null
+	code:null,
+	url:null,
+	msg:null,
+	your_id:null, // 상대 아이디 
+	data:null //chat_contents 
 	
 };
 
@@ -25,6 +27,8 @@ function getContextPath(){
 }
 
 
+//채팅 페이지 열릴 때 
+
 $(document).ready(function(){
 	
 	//$('#content').html('$(document)ready 성공');
@@ -32,10 +36,15 @@ $(document).ready(function(){
 	
 	console.log('$(document)ready 성공');
 	
+	//소켓 연결 
 	$('#btnConnect').click(function(){
 		console.log('연결 버튼 클릭');
+		loginId=$('#user').val();
 		connectWS();
+		message_send_function();
 	});
+	
+	
 });
 
 
@@ -57,6 +66,53 @@ $.ajax({
 		
 	});
 	});
+	
+
+//메세지 전송 
+
+function message_send_function(){
+	$('#btnSend').click(function(e){
+		console.log("send 버튼 클릭");
+		timestamp = new Date().getTime();
+		e.preventDefault();
+		//제이슨데이터 만들기 
+		// 임시 데이터 test
+		
+		jsonData.mId=loginId;
+		
+		yourId="carrot3";
+		c_room_no="3";
+		/*****상대방 아이디 / 채팅방 데이터 받아와야 함  */
+		jsonData.your_id=yourId;
+		jsonData.msg="메세지 전송(socket.send)";
+		jsonData.code="1";
+		jsonData.data=[{
+			c_content_no:"",
+			c_content:$('#msg').val(),
+			send_time:"",
+			c_read:"0",
+			user_id:loginId,
+			c_room_no:c_room_no
+		}]
+		
+
+			
+		
+		console.log("json데이터만들기 끝")
+		
+		
+		
+		$('#msg').val("");
+	
+		
+			
+		message_sendDB(jsonData);
+		console.log("DB 전송")		
+		
+	
+	
+	});
+}
 
 /*
 function getLoginId(){
@@ -69,69 +125,71 @@ function getLoginId(){
 			loginName=msg.split(",")[1];
 		}
 	})
-}
+}*/
 
-//메세지 전송시 작동 
-function message_send_function(target){
-	$('#btnSend').on('click',function(e){
-		e.preventDefault();
-		//제이슨데이터 만들기 
-		// 임시 데이터 test
-		jsonData.mId="carrot3";
-		jsonData.yourId="carrot2";
-		jsonData.contents="다시 연락드립니다!!";
-		jsonData.sendtime=null;
-		jsonData.c_room_no="3";
-		jsonData.chat_read="0";
-		if(jsonData.contents!=null && jsonData.contents!="" && jsonData.contents!='&nbsp'){
-			socket.send(JSON.stringify); //소켓 전송 
-			$('#msg').val("");
-			// 메세지 저장 & 다시 받기 
-			message_sendDB(jsonData);
-		}
-	
-	});
-}
+
 
 	function message_sendDB(jsonData){
 				$.ajax({
-				url:'chat_message',
-    			data: JSON.stringify(jsonData), //전송 데이터
+				url:'chat_message_rest',
+    			data: JSON.stringify(jsonData.data[0]), //전송 데이터
+    			
     			type: "POST", //전송 타입
     			async: true, //비동기 여부
-    			timeout: 5000, //타임 아웃 설정
-    			dataType: "JSON", //응답받을 데이터 타입 (XML,JSON,TEXT,HTML,JSONP)    			
+    			//timeout: 5000, //타임 아웃 설정
+    				
     			contentType: "application/json; charset=utf-8", //헤더의 Content-Type을 설정
+    			dataType: "JSON", //응답받을 데이터 타입 (XML,JSON,TEXT,HTML,JSONP)    			
     			    			
     			// [응답 확인 부분 - json 데이터를 받습니다] -보낸 클라이언트가 자기한테 받는 거 (?)
     			success: function(response) {
-    				console.log("");
+    				console.log("성공");
     				console.log(" 내가 보낸 것 [requestPostBodyJson] : [response] : " + JSON.stringify(response));    				
-    				console.log("");    				
-    			}
+    				console.log("");
+    				jsonData.data[0].send_time=response.send_time;
+    				console.log(JSON.stringify(jsonData));    	
+    				
+    				socket.send(JSON.stringify(jsonData));		
+    					console.log("socket 전송")	;	
+    			},
+    			error:function(xhr){
+						console.log("error");
+				}
+    			
     			});
 			}
 
 
-*/
+
 	
 
 function connectWS(){
-	var loginId="carrot1";
-	var url="ws://localhost:80/spring_web_application_boot_template/replyEcho?mId="+loginId;
+	
+	var url="ws://localhost:80/spring_web_application_boot_template/replyEcho?"+loginId;
 	var ws=new WebSocket(url);
 	socket=ws;
 	
 	ws.onopen = function(evt) {
-			console.log('서버 연결 성공');
+			console.log(loginId+'서버 연결 성공');
 		
 	    };
 	ws.onerror=function(evt){
 		console.log('에러');
 	}
 	
-	ws.onmessage=function(evt){
+	ws.onmessage=function(result){
+		//var onMsg=JSON.parse(evt);
+		console.log(result.data);
+		var onMsg=JSON.parse(result.data);
 		console.log('메세지 얻기');
+		console.log(onMsg.data[0]);
+		
+		if(onMsg.data[0].user_id!=loginId){
+		$('#list').append("상대방:"+onMsg.data[0].c_content+"["+onMsg.data[0].send_time+"]");
+		}else if(onMsg.data[0].user_id==loginId){
+		$('#list').append("나:"+onMsg.data[0].c_content+"["+onMsg.data[0].send_time+"]");
+
+		}
 	}
 	
 	ws.onclose=function(evt){

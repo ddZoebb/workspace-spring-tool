@@ -28,7 +28,7 @@ import com.itwill.service.ChatService;
 @Controller
 public class ChatController {
 	
-	 @Autowired private ChatService chatService;
+	@Autowired private ChatService chatService;
 	 
 	
 	@RequestMapping(value = "/chat", method = { RequestMethod.GET })

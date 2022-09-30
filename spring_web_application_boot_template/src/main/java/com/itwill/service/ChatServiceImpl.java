@@ -14,7 +14,7 @@ public class ChatServiceImpl implements ChatService {
 	Chat_contentsDao chat_contentsDao;
 	
 	public ChatServiceImpl() {
-		System.out.println(">>>>> 채팅 service - dao : "+chat_contentsDao);
+		System.out.println(">>>>> 채팅 service 생성");
 	}
 
 	@Override
@@ -52,6 +52,14 @@ public class ChatServiceImpl implements ChatService {
 		// TODO Auto-generated method stub
 		return chat_contentsDao.insertChat(chat_contents);
 	}
+
+	@Override
+	public String testService() {
+		// TODO Auto-generated method stub
+		String str= "ChatService 호출 테스트";
+		return str;
+	}
+
 	
 	
 
