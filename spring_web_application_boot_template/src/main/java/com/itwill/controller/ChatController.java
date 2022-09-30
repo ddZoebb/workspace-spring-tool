@@ -36,6 +36,11 @@ public class ChatController {
 		return "chat";
 	}
 	
+	@RequestMapping(value = "/chat_content", method = { RequestMethod.GET })
+	public String chat_content(HttpServletRequest req, HttpServletResponse resp, HttpSession session) {
+		return "chat_content";
+	}
+	
 	@ResponseBody
 	   @RequestMapping(value = "/sessionCheck", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
 	   public String returnSessionCheck(HttpSession httpSession) {
